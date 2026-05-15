@@ -1,7 +1,7 @@
 ---
 slug: 3
-title: 3/ZK-AGE-ELIGIBILITY
-name: Wallet-Based Age Eligibility Verification for Third-Party Services
+title: 3/ZK-AGE-VERIFICATION
+name: Wallet-Based Age Verification for Third-Party Services
 status: raw
 category: Standards Track
 tags: zero-knowledge, age-verification, privacy, anonymous-credentials, openac, alcohol-purchase
@@ -22,23 +22,23 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 # Abstract
 
-This specification defines an OpenAC-based privacy-preserving age-eligibility verification protocol for wallet-based proof presentation to third-party services.
+This specification defines an OpenAC-based privacy-preserving age-verification verification protocol for wallet-based proof presentation to third-party services.
 
 In the MVP scope, the holder proves possession of a valid Driver License verifiable credential without disclosing raw identity attributes to the merchant.
 
-For the MVP Driver License profile, age eligibility for alcohol purchase is satisfied by proof of possession of a valid Driver License credential under an accepted credential profile in the target deployment jurisdiction whose issuance policy requires the holder to be at least 18 years old.
+For the MVP Driver License profile, age verification for alcohol purchase is satisfied by proof of possession of a valid Driver License credential under an accepted credential profile in the target deployment jurisdiction whose issuance policy requires the holder to be at least 18 years old.
 
-The protocol adopts the OpenAC prepare-reblind-show model and includes device binding for each presentation. The verifier returns only a minimal eligibility result (`pass` / `fail`) plus metadata. Merchant integrations are verifier-service based, with a standalone verifier service or SDK-like integration kit. Passport-based age calculation is not in scope for this version.
+The protocol adopts the OpenAC prepare-reblind-show model and includes device binding for each presentation. The verifier returns only a minimal verification result (`pass` / `fail`) plus metadata. Merchant integrations are verifier-service based, with a standalone verifier service or SDK-like integration kit. Passport-based age calculation is not in scope for this version.
 
 # Motivation
 
 Online alcohol purchase flows require age gating, while minimizing unnecessary disclosure of identity data to merchants.
 
-This specification defines a primitive that separates eligibility verification from raw identity disclosure by using an OpenAC-based zero-knowledge proof flow integrated with a wallet-based user experience.
+This specification defines a primitive that separates age verification from raw identity disclosure by using an OpenAC-based zero-knowledge proof flow integrated with a wallet-based user experience.
 
 # OpenAC Profile
 
-This specification defines an application profile of OpenAC for age-eligibility verification.
+This specification defines an application profile of OpenAC for age-verification verification.
 
 Conforming implementations MUST:
 
@@ -70,7 +70,7 @@ The MVP credential in scope is a Driver License verifiable credential.
 
 Implementations MUST support proof of credential validity / holder possession for an accepted Driver License credential profile.
 
-For the MVP Driver License profile, `age >= 18` eligibility is satisfied by proving possession of a valid Driver License credential under an accepted credential profile in the target deployment jurisdiction whose issuance policy requires the holder to be at least 18 years old.
+For the MVP Driver License profile, `age >= 18` is satisfied by proving possession of a valid Driver License credential under an accepted credential profile in the target deployment jurisdiction whose issuance policy requires the holder to be at least 18 years old.
 
 This version does not require:
 
@@ -87,7 +87,7 @@ This version does not define the exact Driver License credential attribute schem
 
 ### 2. Verification Session
 
-The merchant backend MUST create a server-side verification session for each checkout attempt that requires alcohol-purchase eligibility verification.
+The merchant backend MUST create a server-side verification session for each checkout attempt that requires alcohol-purchase age verification.
 
 A verification session MUST include:
 
@@ -180,7 +180,7 @@ For `purpose = alcohol_purchase`, the prover MUST generate an OpenAC proof packa
 5. the presentation is device-bound for the current session, and
 6. the proof is bound to the verifier challenge and request context.
 
-For the MVP Driver License profile, successful verification of items 1-5 satisfies the verifier's `age >= 18` eligibility requirement.
+For the MVP Driver License profile, successful verification of items 1-5 satisfies the verifier's `age >= 18` requirement.
 
 The proof MUST bind to:
 
@@ -203,7 +203,7 @@ The submission MUST include:
 
 The verifier MUST return only:
 
-- a minimal eligibility decision (`pass` or `fail`), and
+- a minimal verification decision (`pass` or `fail`), and
 - non-PII metadata required for merchant operation.
 
 The verifier MUST NOT return raw credential fields or other raw identity data to the merchant.
@@ -237,7 +237,7 @@ Implementations MUST support the following flow:
 9. The wallet retrieves or constructs an OpenAC prepared state for the selected credential. If no prepared state exists, the wallet runs the preparation step. Implementations MAY already have precomputed prepared states offline.
 10. The wallet selects one prepared state and performs a fresh re-randomization / reblind step for the current presentation.
 11. The device authorizes the current presentation by signing the session challenge / nonce or by producing an equivalent device-bound authorization input.
-12. The wallet generates the show proof over the re-randomized state, the request context, and the device-binding witness. For the MVP Driver License profile, this establishes age eligibility.
+12. The wallet generates the show proof over the re-randomized state, the request context, and the device-binding witness. For the MVP Driver License profile, this establishes age verification.
 13. The wallet submits `proof package + public inputs + session_id` to the verifier.
 14. The verifier validates the proof package, the prepared-state relation, the show relation, their linkage, device binding, session binding, and anti-replay conditions.
 15. The verifier returns `pass` / `fail` plus allowed metadata to the merchant backend.
@@ -326,7 +326,7 @@ The show relation MUST enforce the following claims for the active session:
 
    The presentation is linked to a Driver License credential profile accepted by the verifier for this verification flow.
 
-   For the MVP Driver License profile, verifier age eligibility is derived from the accepted credential profile and its issuance policy, not from DOB disclosure or in-circuit age computation.
+   For the MVP Driver License profile, verifier age verification is derived from the accepted credential profile and its issuance policy, not from DOB disclosure or in-circuit age computation.
 
 2. **Prepare / show linkage**
 
@@ -508,7 +508,7 @@ This version requires revocation / invalidation support, but does not yet standa
 
 ## External Trust and Issuance Assumptions
 
-For the MVP Driver License profile, verifier age eligibility depends on a deployment assumption: the accepted Driver License profile in the target deployment jurisdiction is issued only to holders aged 18 or older.
+For the MVP Driver License profile, verifier age verification depends on a deployment assumption: the accepted Driver License profile in the target deployment jurisdiction is issued only to holders aged 18 or older.
 
 Trust-anchor selection, issuer allowlisting, and validation of jurisdiction-specific issuance policy are external to this specification and MUST be documented by deployments.
 
@@ -545,7 +545,7 @@ Specific toolchains such as mobile native bindings, WASM verifier bindings, `mop
 - [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt)
 - [1/OPENAC](../1-openac/README.md)
 - [OpenAC: Open Design for Transparent and Lightweight Anonymous Credentials](https://github.com/privacy-ethereum/zkID)
-- [2/ZK-HUMAN-VERIFICATION](../2-zk-human-verification/README.md)
+- [2/ZK-PROOF-OF-PERSONHOOD](../2-zk-proof-of-personhood/README.md)
 - [TWDIW-integration](https://github.com/zkmopro/TWDIW-integration)
 - [TWDIW Official App](https://github.com/moda-gov-tw/TWDIW-official-app)
 
