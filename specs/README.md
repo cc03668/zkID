@@ -6,7 +6,7 @@ reference implementation.
 | # | Spec | Status | Summary |
 | - | --- | --- | --- |
 | 1 | `OPENAC` | _in review_ | Reserved for the OpenAC core protocol — under separate review. |
-| 2 | [ZK-HUMAN-VERIFICATION](./2-zk-human-verification/README.md) | raw | ZK-based one-time "verified human" status for online forums, with a deterministic nullifier. |
+| 2 | [ZK-PROOF-OF-PERSONHOOD](./2-zk-human-verification/README.md) | raw | ZK-based one-time "verified human" status for online forums, with a deterministic nullifier. |
 | 3 | [ZK-AGE-ELIGIBILITY](./3-zk-age-eligibility/README.md) | raw | Wallet-based age-eligibility verification, profiled on top of OpenAC. Initial scope: Driver License for alcohol-purchase gating. |
 
 ## Change Process
